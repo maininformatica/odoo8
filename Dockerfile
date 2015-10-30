@@ -12,8 +12,8 @@ RUN apt-get upgrade -y
 #
 # Locale setup (if not set, PostgreSQL creates the database in SQL_ASCII)
 #
-RUN echo "locales locales/locales_to_be_generated multiselect en_ES.UTF-8 UTF-8" | debconf-set-selections &&\
-    echo "locales locales/default_environment_locale select en_ES.UTF-8" | debconf-set-selections
+RUN echo "locales locales/locales_to_be_generated multiselect es_ES.UTF-8 UTF-8" | debconf-set-selections &&\
+    echo "locales locales/default_environment_locale select es_ES.UTF-8" | debconf-set-selections
 RUN apt-get install locales -qq
 RUN locale-gen es_ES.UTF-8
 ENV LC_ALL es_ES.UTF-8
