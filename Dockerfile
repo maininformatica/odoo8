@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:testing
 MAINTAINER Jose Tormo Main Informatica @maininformatica
 
 
@@ -15,8 +15,8 @@ RUN apt-get upgrade -y
 RUN echo "locales locales/locales_to_be_generated multiselect en_ES.UTF-8 UTF-8" | debconf-set-selections &&\
     echo "locales locales/default_environment_locale select en_ES.UTF-8" | debconf-set-selections
 RUN apt-get install locales -qq
-RUN locale-gen en_ES.UTF-8
-ENV LC_ALL en_ES.UTF-8
+RUN locale-gen es_ES.UTF-8
+ENV LC_ALL es_ES.UTF-8
 
 #
 # Install PostgreSQL, Odoo and Supervisor
