@@ -1,4 +1,4 @@
-FROM debian:testing
+FROM debian:stable
 MAINTAINER Jose Tormo Main Informatica @maininformatica
 
 
