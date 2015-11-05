@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM ubuntu:14.04
 MAINTAINER Jose Tormo Main Informatica @maininformatica
 
 
@@ -21,7 +21,7 @@ ENV LC_ALL es_ES.UTF-8
 #
 # Install PostgreSQL, Odoo and Supervisor
 #
-RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo
+RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git
 
 #
 # Clean
