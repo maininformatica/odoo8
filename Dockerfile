@@ -48,6 +48,5 @@ VOLUME  ["/var/lib/postgresql"]
 #CMD ["/usr/bin/supervisord", "-n"]
 
 EXPOSE 8069
-EXPOSE 2022
 EXPOSE 5432
 
