@@ -21,8 +21,7 @@ ENV LC_ALL es_ES.UTF-8
 #
 # Install PostgreSQL, Odoo and Supervisor
 #
-RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git unidecode
-# python-cups python-dateutil python-decorator python-docutils python-feedparser python-gdata python-geoip python-gevent python-imaging python-jinja2 python-ldap python-libxslt1 python-lxml python-mako python-mock python-openid python-passlib python-psutil python-psycopg2 python-pybabel python-pychart python-pydot python-pyparsing python-pypdf python-reportlab python-requests python-simplejson python-tz python-unicodecsv python-unittest2 python-vatnumber python-vobject python-werkzeug python-xlwt python-yaml wkhtmltopdf python-pip
+RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git
 
 #
 # Clean
@@ -32,21 +31,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
 #
 # PostgreSQL: add user odoo and fix permissions
 #
-RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
-RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
-
-#
-# Supervisor setup
-#
-# ADD etc/supervisor/conf.d/10_postgresql.conf /etc/supervisor/conf.d/10_postgresql.conf
-# ADD etc/supervisor/conf.d/20_odoo.conf /etc/supervisor/conf.d/20_odoo.conf
-
-# RUN update-rc.d odoo defaults
-# RUN update-rc.d postgresql defaults
-
-#CMD ["/usr/bin/supervisord", "-n"]
+RUN chown -R postgres.postgres /var/lib/postgresql
+RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
 
 EXPOSE 8069
-
-
