@@ -48,6 +48,6 @@ RUN update-rc.d postgresql defaults
 
 
 EXPOSE 8069
-EXPOSE 22
+EXPOSE 2022
 EXPOSE 5432
 #CMD ["/usr/bin/supervisord", "-n"]
