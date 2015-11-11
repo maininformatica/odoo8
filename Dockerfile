@@ -21,7 +21,7 @@ ENV LC_ALL es_ES.UTF-8
 #
 # Install PostgreSQL, Odoo and Supervisor
 #
-RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git
+RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git ssh
 
 #
 # Clean
@@ -36,3 +36,4 @@ RUN chown -R postgres.postgres /var/lib/postgresql
 RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
 
 EXPOSE 8069
+EXPOSE 22
