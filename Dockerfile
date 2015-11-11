@@ -42,12 +42,12 @@ VOLUME  ["/var/lib/postgresql"]
 # ADD etc/supervisor/conf.d/10_postgresql.conf /etc/supervisor/conf.d/10_postgresql.conf
 # ADD etc/supervisor/conf.d/20_odoo.conf /etc/supervisor/conf.d/20_odoo.conf
 
-RUN update-rc.d odoo defaults
-RUN update-rc.d postgresql defaults
+# RUN update-rc.d odoo defaults
+# RUN update-rc.d postgresql defaults
 
-
+#CMD ["/usr/bin/supervisord", "-n"]
 
 EXPOSE 8069
 EXPOSE 2022
 EXPOSE 5432
-#CMD ["/usr/bin/supervisord", "-n"]
+
