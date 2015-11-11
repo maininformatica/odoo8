@@ -43,4 +43,7 @@ VOLUME  ["/var/lib/postgresql"]
 # ADD etc/supervisor/conf.d/20_odoo.conf /etc/supervisor/conf.d/20_odoo.conf
 
 EXPOSE 8069
+EXPOSE 631
+EXPOSE 22
+EXPOSE 5432
 #CMD ["/usr/bin/supervisord", "-n"]
