@@ -14,9 +14,11 @@ Características
 
 
 Puertos Expose para NAT
+
 SSH        22
 PostgreSQL 5432
 Odoo       8069
 CUPS       631 (https)
+
 
 
