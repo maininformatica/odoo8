@@ -43,6 +43,10 @@ EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
 
 
+# CUPS Printers
+EXPOSE 631
+
+
 
 #
 # PostgreSQL: add user odoo and fix permissions
@@ -50,5 +54,8 @@ CMD ["/usr/sbin/sshd", "-D"]
 VOLUME  ["/var/lib/postgresql"]
 RUN chown -R postgres.postgres /var/lib/postgresql
 RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
+EXPOSE 5432
 
+# Odoo Custom
 EXPOSE 8069
+
