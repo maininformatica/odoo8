@@ -21,12 +21,28 @@ ENV LC_ALL es_ES.UTF-8
 #
 # Install PostgreSQL, Odoo and Supervisor
 #
-RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git ssh
+RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git openssh-server
 
 #
 # Clean
 #
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
+
+# Preparamos el SSH
+RUN mkdir /var/run/sshd
+RUN echo 'root:odoomain' | chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+
 
 #
 # PostgreSQL: add user odoo and fix permissions
@@ -36,4 +52,3 @@ RUN chown -R postgres.postgres /var/lib/postgresql
 RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
 
 EXPOSE 8069
-EXPOSE 22
