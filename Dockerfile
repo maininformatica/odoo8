@@ -28,7 +28,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
 # Preparamos el SSH
 #
 RUN mkdir /var/run/sshd
-RUN echo 'root:admin' | chpasswd
+RUN echo 'root:odooadmin' | chpasswd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 ENV NOTVISIBLE "in users profile"
@@ -59,6 +59,6 @@ EXPOSE 5432
 #
 RUN git clone https://github.com/OCA/l10n-spain.git /var/lib/odoo/.local/share/Odoo/addons/8.0/
 RUN chown odoo.odoo /var/lib/odoo/.local/share/Odoo/addons/8.0 -R
-CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
+# CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
 EXPOSE 8069
 
