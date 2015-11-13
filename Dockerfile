@@ -34,7 +34,7 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 EXPOSE 22
-CMD ["/etc/init.d/ssh", "start", "&"]
+## CMD ["/etc/init.d/ssh", "start", "&"]
 # CMD ["/usr/sbin/sshd", "-D", "&"]
 
 #
@@ -43,28 +43,28 @@ CMD ["/etc/init.d/ssh", "start", "&"]
 RUN sed -i 's/Listen localhost:631/Listen *:631/' /etc/cups/cupsd.conf
 RUN sed -i 's/Order allow,deny/Allow all/' /etc/cups/cupsd.conf
 EXPOSE 631
-CMD ["/etc/init.d/cups", "start", "&"]
+## CMD ["/etc/init.d/cups", "start", "&"]
 
 
 #
 # PostgreSQL
 #
 RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
-RUN echo "update pg_database set datallowconn = TRUE where datname = 'template0';
-\c template0
-update pg_database set datistemplate = FALSE where datname = 'template1';
-drop database template1;
-create database template1 with template = template0 encoding = 'UTF8';
-update pg_database set datistemplate = TRUE where datname = 'template1';
-\c template1
-update pg_database set datallowconn = FALSE where datname = 'template0';
-\q" > /tmp/utf8.sql
-sudo -u postgres psql postgres < /tmp/utf8.sql
+RUN echo "update pg_database set datallowconn = TRUE where datname = 'template0';" > /tmp/utf8.sql
+RUN echo "\c template0" >> /tmp/utf8.sql
+RUN echo "update pg_database set datistemplate = FALSE where datname = 'template1';" >> /tmp/utf8.sql
+RUN echo "drop database template1;" >> /tmp/utf8.sql
+RUN echo "create database template1 with template = template0 encoding = 'UTF8';" >> /tmp/utf8.sql
+RUN echo "update pg_database set datistemplate = TRUE where datname = 'template1';" >> /tmp/utf8.sql
+RUN echo "\c template1" >> /tmp/utf8.sql
+RUN echo "update pg_database set datallowconn = FALSE where datname = 'template0';" >> /tmp/utf8.sql
+RUN echo "\q" >> /tmp/utf8.sql
+RUN sudo -u postgres psql postgres < /tmp/utf8.sql
 # CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
 EXPOSE 5432
-CMD ["/etc/init.d/postgresql", "start", "&"]
+## CMD ["/etc/init.d/postgresql", "start", "&"]
 
 #
 # Odoo
@@ -72,7 +72,9 @@ CMD ["/etc/init.d/postgresql", "start", "&"]
 RUN git clone https://github.com/OCA/l10n-spain.git /var/lib/odoo/.local/share/Odoo/addons/8.0/
 RUN chown odoo.odoo /var/lib/odoo/.local/share/Odoo/addons/8.0 -R
 RUN chmod 777 /var/lib/odoo/.local/share/Odoo -R
-RUN sed -i 's/addons_path = \/usr\/lib\/python2.7\/dist-packages\/openerp\/addons\/addons_path = \/usr/lib\/python2.7\/dist-packages\/openerp\/addons,\/var\/lib\/odoo\/.local\/share\/Odoo\/addons\/8.07\//' /etc/odoo/openerp-server.conf
+RUN sed -i '$d' /etc/odoo/openerp-server.conf
+RUN echo "addons_path = /usr/lib/python2.7/dist-packages/openerp/addons,/var/lib/odoo/.local/share/Odoo/addons/8.0" >> /etc/odoo/openerp-server.conf
+RUN sed -i 's/; admin_passwd = admin/admin_passwd = odooadmin/' /etc/odoo/openerp-server.conf
 # CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
 EXPOSE 8069
-CMD ["/etc/init.d/odoo", "start", "&"]
+## CMD ["/etc/init.d/odoo", "start", "&"]
