@@ -42,7 +42,7 @@ CMD ["/usr/sbin/sshd", "-D"]
 RUN sed -i 's/Listen localhost:631/Listen *:631/' /etc/cups/cupsd.conf
 RUN sed -i 's/Order allow,deny/Allow all/' /etc/cups/cupsd.conf
 EXPOSE 631
-# CMD ["/etc/init.d/cups", "start"]
+CMD ["/etc/init.d/cups", "start"]
 
 
 #
@@ -53,6 +53,7 @@ RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
 EXPOSE 5432
+CMD ["/etc/init.d/postgresql", "start"]
 
 #
 # Odoo
@@ -61,4 +62,4 @@ RUN git clone https://github.com/OCA/l10n-spain.git /var/lib/odoo/.local/share/O
 RUN chown odoo.odoo /var/lib/odoo/.local/share/Odoo/addons/8.0 -R
 # CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
 EXPOSE 8069
-
+CMD ["/etc/init.d/odoo", "start"]
