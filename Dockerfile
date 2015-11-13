@@ -75,5 +75,5 @@ EXPOSE 8069
 
 # Entrypoint
 COPY ./entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+## ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["openerp-server"]
