@@ -74,5 +74,6 @@ EXPOSE 8069
 ## CMD ["/etc/init.d/odoo", "start", "&"]
 
 # Entrypoint
+COPY ./entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["openerp-server"]
