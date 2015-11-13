@@ -34,7 +34,7 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 EXPOSE 22
-## CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/usr/sbin/sshd", "-D", "&"]
 
 #
 # CUPS Printers
@@ -42,7 +42,7 @@ EXPOSE 22
 RUN sed -i 's/Listen localhost:631/Listen *:631/' /etc/cups/cupsd.conf
 RUN sed -i 's/Order allow,deny/Allow all/' /etc/cups/cupsd.conf
 EXPOSE 631
-## CMD ["/etc/init.d/cups", "start"]
+CMD ["/etc/init.d/cups", "start", "&"]
 
 
 #
@@ -53,13 +53,15 @@ RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
 EXPOSE 5432
-## CMD ["/etc/init.d/postgresql", "start"]
+CMD ["/etc/init.d/postgresql", "start", "&"]
 
 #
 # Odoo
 #
 RUN git clone https://github.com/OCA/l10n-spain.git /var/lib/odoo/.local/share/Odoo/addons/8.0/
 RUN chown odoo.odoo /var/lib/odoo/.local/share/Odoo/addons/8.0 -R
+RUN chmod 777 /var/lib/odoo/.local/share/Odoo -R
+RUN sed -i 's/addons_path = \/usr\/lib\/python2.7\/dist-packages\/openerp\/addons\/addons_path = \/usr/lib\/python2.7\/dist-packages\/openerp\/addons,\/var\/lib\/odoo\/.local\/share\/Odoo\/addons\/8.07\//' /etc/odoo/openerp-server.conf
 # CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
 EXPOSE 8069
-## CMD ["/etc/init.d/odoo", "start"]
+CMD ["/etc/init.d/odoo", "start", "&"]
