@@ -59,7 +59,7 @@ RUN echo "update pg_database set datistemplate = TRUE where datname = 'template1
 RUN echo "\c template1" >> /tmp/utf8.sql
 RUN echo "update pg_database set datallowconn = FALSE where datname = 'template0';" >> /tmp/utf8.sql
 RUN echo "\q" >> /tmp/utf8.sql
-RUN sudo -u postgres psql postgres < /tmp/utf8.sql
+RUN sleep 2 && chmod 777 /tmp/utf8.sql && su postgres -c "psql postgres < /tmp/utf8.sql"
 # CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
