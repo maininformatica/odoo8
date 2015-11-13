@@ -21,7 +21,10 @@ ENV LC_ALL es_ES.UTF-8
 #
 # Paquetes
 #
-RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git openssh-server cups
+RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git openssh-server cups xfonts-75dpi xfonts-base xfonts-encodings xfonts-utils
+RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && sleep 2 && dpkg -i wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
+RUN sudo cp /usr/local/bin/wkhtmltoimage /usr/bin/wkhtmltoimage
+RUN sudo cp /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
 
 #
@@ -50,16 +53,8 @@ EXPOSE 631
 # PostgreSQL
 #
 RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
-RUN echo "update pg_database set datallowconn = TRUE where datname = 'template0';" > /tmp/utf8.sql
-RUN echo "\c template0" >> /tmp/utf8.sql
-RUN echo "update pg_database set datistemplate = FALSE where datname = 'template1';" >> /tmp/utf8.sql
-RUN echo "drop database template1;" >> /tmp/utf8.sql
-RUN echo "create database template1 with template = template0 encoding = 'UTF8';" >> /tmp/utf8.sql
-RUN echo "update pg_database set datistemplate = TRUE where datname = 'template1';" >> /tmp/utf8.sql
-RUN echo "\c template1" >> /tmp/utf8.sql
-RUN echo "update pg_database set datallowconn = FALSE where datname = 'template0';" >> /tmp/utf8.sql
-RUN echo "\q" >> /tmp/utf8.sql
-RUN sleep 2 && chmod 777 /tmp/utf8.sql && su postgres -c "psql postgres < /tmp/utf8.sql"
+COPY ./utf.sql /tmp/utf.sql
+RUN su postgres -c "psql postgres < /tmp/utf.sql > /dev/null"
 # CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
@@ -78,3 +73,7 @@ RUN sed -i 's/; admin_passwd = admin/admin_passwd = odooadmin/' /etc/odoo/opener
 # CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
 EXPOSE 8069
 ## CMD ["/etc/init.d/odoo", "start", "&"]
+
+# Entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
+# CMD ["openerp-server"]
