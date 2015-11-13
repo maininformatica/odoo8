@@ -75,5 +75,6 @@ EXPOSE 8069
 
 # Entrypoint
 COPY ./entrypoint.sh /entrypoint.sh
-## ENTRYPOINT ["/entrypoint.sh"]
+RUN chmod a+x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 # CMD ["openerp-server"]
