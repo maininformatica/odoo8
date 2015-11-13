@@ -1,5 +1,6 @@
 #!/bin/bash
-/etc/init.d/postgresql start
-/etc/init.d/ssh start 
-/etc/init.d/cups start
-/etc/init.d/odoo start
+/etc/init.d/postgresql start & >/dev/null
+/etc/init.d/ssh start  & >/dev/null
+/etc/init.d/cups start & >/dev/null
+/etc/init.d/odoo start & >/dev/null
+
