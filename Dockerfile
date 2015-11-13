@@ -52,9 +52,8 @@ EXPOSE 631
 #
 # PostgreSQL
 #
-RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
 COPY ./utf.sql /tmp/utf.sql
-RUN su postgres -c "psql postgres < /tmp/utf.sql > /dev/null"
+RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo" && su postgres -c "psql postgres < /tmp/utf.sql > /dev/null"
 # CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
