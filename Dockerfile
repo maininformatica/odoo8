@@ -34,7 +34,8 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D", "&"]
+CMD ["/etc/init.d/ssh", "start", "&"]
+# CMD ["/usr/sbin/sshd", "-D", "&"]
 
 #
 # CUPS Printers
@@ -49,6 +50,16 @@ CMD ["/etc/init.d/cups", "start", "&"]
 # PostgreSQL
 #
 RUN /etc/init.d/postgresql start && su postgres -c "createuser -s odoo"
+RUN echo "update pg_database set datallowconn = TRUE where datname = 'template0';
+\c template0
+update pg_database set datistemplate = FALSE where datname = 'template1';
+drop database template1;
+create database template1 with template = template0 encoding = 'UTF8';
+update pg_database set datistemplate = TRUE where datname = 'template1';
+\c template1
+update pg_database set datallowconn = FALSE where datname = 'template0';
+\q" > /tmp/utf8.sql
+sudo -u postgres psql postgres < /tmp/utf8.sql
 # CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf"]
 RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
