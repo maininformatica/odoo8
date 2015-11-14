@@ -6,4 +6,5 @@ create database template1 with template = template0 encoding = 'UTF8';
 update pg_database set datistemplate = TRUE where datname = 'template1';
 \c template1
 update pg_database set datallowconn = FALSE where datname = 'template0';
+alter user postgres with password 'odooadmin'; 
 \q
