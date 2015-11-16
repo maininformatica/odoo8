@@ -1,6 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Jose Tormo Main Informatica @maininformatica
-
+MAINTAINER Jose Tormo Main Informatica @maininformatica jtormo@main-informatica.com
 
 #
 # Configure APT 
