@@ -69,7 +69,7 @@ RUN echo "addons_path = /usr/lib/python2.7/dist-packages/openerp/addons,/var/lib
 RUN sed -i 's/; admin_passwd = admin/admin_passwd = odooadmin/' /etc/odoo/openerp-server.conf
 # CMD ["/usr/bin/python", "/usr/bin/odoo.py", "--config", "/etc/odoo/openerp-server.conf", "--logfile", "/var/log/odoo/odoo-server.log"]
 EXPOSE 8069
-## CMD ["/etc/init.d/odoo", "start", "&"]
+## CMD ["/etc/init.d/odoo", "start"]
 
 # Entrypoint
 COPY ./entrypoint.sh /entrypoint.sh
