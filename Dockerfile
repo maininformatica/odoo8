@@ -56,7 +56,10 @@ EXPOSE 5432
 #
 # Odoo
 #
+# Localizacion Española
 RUN git clone https://github.com/OCA/l10n-spain.git /var/lib/odoo/.local/share/Odoo/addons/8.0/
+# Almacenes, Lotes, Albaranes
+RUN git clone https://github.com/OCA/sale-workflow.git /var/lib/odoo/.local/share/Odoo/addons/8.0/ --branch 8.0
 RUN chown odoo.odoo /var/lib/odoo/.local/share/Odoo/addons/8.0 -R
 RUN chmod 777 /var/lib/odoo/.local/share/Odoo -R
 RUN sed -i '$d' /etc/odoo/openerp-server.conf
