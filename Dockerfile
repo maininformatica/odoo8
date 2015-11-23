@@ -77,6 +77,6 @@ EXPOSE 8069
 ## RUN chmod a+x /entrypoint.sh
 ## # ENTRYPOINT ["/entrypoint.sh"]
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "&"]
 
 
