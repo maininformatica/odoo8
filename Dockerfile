@@ -44,7 +44,7 @@ CMD ["/usr/sbin/sshd", "-D"]
 RUN sed -i 's/Listen localhost:631/Listen *:631/' /etc/cups/cupsd.conf
 RUN sed -i 's/Order allow,deny/Allow all/' /etc/cups/cupsd.conf
 EXPOSE 631
-CMD ["/etc/init.d/cups", "start", "&"]
+# CMD ["/etc/init.d/cups", "start", "&"]
 
 
 #
