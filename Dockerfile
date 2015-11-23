@@ -57,6 +57,7 @@ RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
 EXPOSE 5432
 ## CMD ["/etc/init.d/postgresql", "start", "&"]
+CMD ["su", "postgres", "-c", "'/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &'"]
 
 #
 # Odoo
