@@ -72,8 +72,11 @@ RUN sed -i 's/; admin_passwd = admin/admin_passwd = odooadmin/' /etc/odoo/opener
 EXPOSE 8069
 ## CMD ["/etc/init.d/odoo", "start"]
 
-## # Entrypoint
+# Entrypoint
 ## COPY ./entrypoint.sh /entrypoint.sh
 ## RUN chmod a+x /entrypoint.sh
 ## # ENTRYPOINT ["/entrypoint.sh"]
+COPY ./supervisord.conf /etc/supervisor/supervisord.conf
+CMD ["/usr/bin/supervisord"]
+
 
