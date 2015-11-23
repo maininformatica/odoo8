@@ -36,7 +36,7 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+# CMD ["/usr/sbin/sshd", "-D"]
 
 #
 # CUPS Printers
@@ -57,7 +57,7 @@ RUN chown -R postgres.postgres /var/lib/postgresql
 VOLUME  ["/var/lib/postgresql"]
 EXPOSE 5432
 ## CMD ["/etc/init.d/postgresql", "start", "&"]
-CMD ["su", "postgres", "-c", "'/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &'"]
+# CMD ["su", "postgres", "-c", "'/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf &'"]
 
 #
 # Odoo
@@ -72,8 +72,8 @@ RUN sed -i 's/; admin_passwd = admin/admin_passwd = odooadmin/' /etc/odoo/opener
 EXPOSE 8069
 ## CMD ["/etc/init.d/odoo", "start"]
 
-# Entrypoint
-COPY ./entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
-# ENTRYPOINT ["/entrypoint.sh"]
+## # Entrypoint
+## COPY ./entrypoint.sh /entrypoint.sh
+## RUN chmod a+x /entrypoint.sh
+## # ENTRYPOINT ["/entrypoint.sh"]
 
