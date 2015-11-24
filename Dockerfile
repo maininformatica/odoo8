@@ -1,6 +1,5 @@
 FROM ubuntu:14.04
 MAINTAINER Jose Tormo Main Informatica @maininformatica jtormo@main-informatica.com
-# Odoo 8 con NAT del puerto postgres y CUPS
 
 #
 # Configure APT 
