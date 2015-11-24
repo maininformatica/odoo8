@@ -68,5 +68,5 @@ RUN sed -i 's/; admin_passwd = admin/admin_passwd = odooadmin/' /etc/odoo/opener
 EXPOSE 8069
 
 # Supervisor
-COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./supervisord.conf /etc/supervisor/conf.d/maininformatica.conf
 # CMD ["/usr/bin/supervisord"]
