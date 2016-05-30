@@ -20,7 +20,7 @@ ENV LC_ALL es_ES.UTF-8
 #
 # Paquetes
 #
-RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git openssh-server cups xfonts-75dpi xfonts-base xfonts-encodings xfonts-utils
+RUN apt-get install --allow-unauthenticated -y supervisor postgresql odoo make gcc libncurses5-dev bison flex mc joe git openssh-server xfonts-75dpi xfonts-base xfonts-encodings xfonts-utils
 RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.2.1/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb && sleep 2 && dpkg -i wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
 RUN sudo cp /usr/local/bin/wkhtmltoimage /usr/bin/wkhtmltoimage
 RUN sudo cp /usr/local/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
@@ -36,13 +36,6 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 EXPOSE 22
-
-#
-# CUPS Printers
-#
-RUN sed -i 's/Listen localhost:631/Listen *:631/' /etc/cups/cupsd.conf
-RUN sed -i 's/Order allow,deny/Allow all/' /etc/cups/cupsd.conf
-EXPOSE 631
 
 #
 # PostgreSQL
@@ -70,3 +63,6 @@ EXPOSE 8069
 # Supervisor
 COPY ./supervisord.conf /etc/supervisor/conf.d/maininformatica.conf
 CMD ["/usr/bin/supervisord", "-n"]
+COPY ./entrypoint.sh /etc/
+RUN chmod a+x /etc/entrypoint.sh
+RUN echo "/etc/entrypoint.sh" >> /root/.bashrc
