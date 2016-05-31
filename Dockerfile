@@ -62,7 +62,7 @@ EXPOSE 8069
 
 # Supervisor
 COPY ./supervisord.conf /etc/supervisor/conf.d/maininformatica.conf
-CMD ["/usr/bin/supervisord", "-n"]
+# CMD ["/usr/bin/supervisord", "-n"]
 COPY ./entrypoint.sh /etc/
 RUN chmod a+x /etc/entrypoint.sh
 RUN echo "/etc/entrypoint.sh" >> /root/.bashrc
